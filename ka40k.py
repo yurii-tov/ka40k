@@ -46,6 +46,14 @@ def select_exercises(weights, amount=3):
 
 
 def main():
+    if len(sys.argv) < 2:
+        print("Usage: ka40k number-of-exercises-to-choose")
+        return
+    try:
+        num_of_exercises = int(sys.argv[1])
+    except ValueError:
+        print("Natural number expected")
+        return
     exercises_file = 'exercises'
     exercises = read_exercises_list(exercises_file)
     if len(exercises) is 0:
@@ -53,7 +61,7 @@ def main():
         return
     weights_file = 'weights.csv'
     weights = update_weights(read_weights(weights_file), exercises)
-    (selected, weights) = select_exercises(weights)
+    (selected, weights) = select_exercises(weights, amount=num_of_exercises)
     for exercise in selected:
         print(exercise)
     save_weights(weights, weights_file)
