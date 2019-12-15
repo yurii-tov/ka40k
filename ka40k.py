@@ -1,11 +1,11 @@
 import csv, sys, os.path
 
+
 def read_exercises_from_csv(filename):
-    exercises = list()
     with open(filename) as r:
-        for (exercise, weight) in csv.reader(r):
-            exercises.append([exercise, int(weight)])
-    return exercises
+        return [[exercise, int(weight)]
+                for (exercise, weight)
+                in csv.reader(r)]
 
 
 def save_exercises_to_csv(exercises, filename):
@@ -13,7 +13,6 @@ def save_exercises_to_csv(exercises, filename):
         w = csv.writer(fw, dialect='unix')
         for r in exercises:
             w.writerow(r)
-    return
 
 
 def select_exercises(exercises, amount=3):
