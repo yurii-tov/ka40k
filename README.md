@@ -9,13 +9,16 @@ This small program will help you choose the exercises for your current workout, 
 
 ## Usage
 
-### 1. Run the program without arguments
+### 1. Run the program with any arguments
 
 At this moment, program will create empty file for exercises list
 
 ```sh
 $ python -m ka40k
-File 'exercises' not found, so it has been created for you. Please put list of exercises into it.
+# Output:
+# 
+# File 'exercises' not found, so it has been created for you. Please put list of exercises into it:
+# c:\Users\Jury\work\ka4ok\exercises
 ```
 
 ### 2. Fill list of exercises
@@ -23,7 +26,7 @@ File 'exercises' not found, so it has been created for you. Please put list of e
 First, you have to put list of exercises in a text file `exercises` in the same directory as the program.
 You can use `example` file as a guide
 
-### 3. Run program again with argument
+### 3. Run program again with argument (a number of exercises you want to perform now)
 
 ```sh
 $ python -m ka40k 3
