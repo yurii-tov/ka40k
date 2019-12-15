@@ -1,42 +1,63 @@
 import csv, sys, os.path
 
 
-def read_exercises_from_csv(filename):
+def read_exercises_list(filename):
+    if not os.path.exists(filename):
+        return []
+    with open(filename) as r:
+        return [exercise.strip()
+                for exercise
+                in r]
+
+
+def read_weights(filename):
+    if not os.path.exists(filename):
+        return []
     with open(filename) as r:
         return [[exercise, int(weight)]
                 for (exercise, weight)
                 in csv.reader(r)]
 
 
-def save_exercises_to_csv(exercises, filename):
+def update_weights(weights, exercises):
+    weights_set = {w[0] for w in weights}
+    exercises_set = set(exercises)
+    if weights_set.symmetric_difference(exercises_set):
+        return [[e, 0] for e in exercises]
+    return weights
+
+    
+def save_weights(weights, filename):
     with open(filename, mode='w') as fw:
         w = csv.writer(fw, dialect='unix')
-        for r in exercises:
+        for r in weights:
             w.writerow(r)
 
 
-def select_exercises(exercises, amount=3):
-    exercises_1 = sorted(exercises, key=lambda x: x[1])
+def select_exercises(weights, amount=3):
+    weights_1 = sorted(weights, key=lambda x: x[1])
     selected = list()
-    upto = min(amount, len(exercises))
+    upto = min(amount, len(weights))
     for i in range(0, upto):
-        (exercise, weight) = exercises_1.pop(i)
+        (exercise, weight) = weights_1.pop(i)
         selected.append(exercise)
-        exercises_1.append([exercise, weight + 1])
-    return (selected, exercises_1)
+        weights_1.append([exercise, weight + 1])
+    return (selected, weights_1)
 
 
 def main():
-    exercises_file = 'exercises.csv'
-    exercises = read_exercises_from_csv(exercises_file)
+    exercises_file = 'exercises'
+    exercises = read_exercises_list(exercises_file)
     if len(exercises) is 0:
-        print("You don't have any exercises in file {0}".format(exercises_file))
+        print("You don't have any exercises in file '{0}'".format(exercises_file))
         return
-    (selected, new_list) = select_exercises(exercises)
+    weights_file = 'weights.csv'
+    weights = update_weights(read_weights(weights_file), exercises)
+    (selected, weights) = select_exercises(weights)
     for exercise in selected:
         print(exercise)
-    save_exercises_to_csv(new_list, exercises_file)
-        
+    save_weights(weights, weights_file)
+    
 
 if __name__ == "__main__":
     # execute only if run as a script
