@@ -33,14 +33,14 @@ def save_weights(weights, filename):
 
 
 def select_exercises(weights, amount=3):
-    weights_1 = sorted(weights, key=lambda x: x[1])
+    weights = sorted(weights, key=lambda x: x[1])
     selected = list()
     upto = min(amount, len(weights))
     for i in range(0, upto):
-        (exercise, weight) = weights_1.pop(i)
+        (exercise, weight) = weights.pop(0)
         selected.append(exercise)
-        weights_1.append([exercise, weight + 1])
-    return (selected, weights_1)
+        weights.append([exercise, weight + 1])
+    return (selected, weights)
 
 
 def main():
