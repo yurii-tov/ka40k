@@ -87,7 +87,7 @@ def main():
         print("Natural number expected")
         return
     exercises = read_exercises_list(exercises_file)
-    if len(exercises) is 0:
+    if len(exercises) == 0:
         print("You don't have any exercises in file '{0}'".format(exercises_file))
         return
     weights_file = 'weights.csv'
