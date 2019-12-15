@@ -1,4 +1,4 @@
-import csv, sys, os.path
+import csv, sys, os.path, random
 
 
 def read_exercises_list(filename):
@@ -32,8 +32,36 @@ def save_weights(weights, filename):
             w.writerow(r)
 
 
-def select_exercises(weights, amount=3):
+def prepare_weights(weights):
+    """Prepare list of weights for selection
+    (sorting + introduce a bit of randomness)
+    -----
+    Steps
+    -----
+    1. Sorting by weight
+    2. Partition (also by weighs)
+    3. Shuffle elements into sublists
+    4. Join sublists into single list"""
+    if not len(weights):
+        return []
     weights = sorted(weights, key=lambda x: x[1])
+    partition = [[]]
+    i = 0
+    group = partition[0]
+    for r in weights:
+        weight = r[1]
+        if weight != i:
+            partition.append([])
+            group = partition[-1]
+            i = weight
+        group.append(r)
+    for g in partition:
+        random.shuffle(g)
+    return [r for g in partition for r in g]
+            
+            
+def select_exercises(weights, amount=3):
+    weights = prepare_weights(weights)
     selected = list()
     upto = min(amount, len(weights))
     for i in range(0, upto):
