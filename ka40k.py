@@ -2,8 +2,6 @@ import csv, sys, os.path
 
 
 def read_exercises_list(filename):
-    if not os.path.exists(filename):
-        return []
     with open(filename) as r:
         return [exercise.strip()
                 for exercise
@@ -46,6 +44,12 @@ def select_exercises(weights, amount=3):
 
 
 def main():
+    exercises_file = 'exercises'
+    if not os.path.exists(exercises_file):
+        with open(exercises_file, 'w'):
+            pass
+        print("File '{0}' not found, so it has been created for you. Please put list of exercises into it:\n{1}".format(exercises_file, os.path.abspath(exercises_file)))
+        return
     if len(sys.argv) < 2:
         print("Usage: ka40k number-of-exercises-to-choose")
         return
@@ -54,7 +58,6 @@ def main():
     except ValueError:
         print("Natural number expected")
         return
-    exercises_file = 'exercises'
     exercises = read_exercises_list(exercises_file)
     if len(exercises) is 0:
         print("You don't have any exercises in file '{0}'".format(exercises_file))
